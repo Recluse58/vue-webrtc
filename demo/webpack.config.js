@@ -47,7 +47,12 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    https: {
+      key: fs.readFileSync('../ssl/dev.kazootechnology.com.key'),
+      cert: fs.readFileSync('../ssl/dev.kazootechnology.com.crt'),
+      //ca: fs.readFileSync('/path/to/ca.pem'),
+    }
   },
   performance: {
     hints: false
