@@ -44,7 +44,7 @@
   import Vue from 'vue'
   import { WebRTC } from 'plugin';
   import { find, head } from 'lodash';
-  
+
   import * as io from 'socket.io-client'
   window.io = io
 
@@ -57,7 +57,7 @@
     data() {
       return {
         img: null,
-        roomId: "public-room"
+        roomId: "kazoo1"
       };
     },
     computed: {

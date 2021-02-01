@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var fs = require('fs')
 
 module.exports = {
   entry: './demo/src/main.js',
@@ -48,11 +49,11 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    https: {
-      key: fs.readFileSync('../ssl/dev.kazootechnology.com.key'),
-      cert: fs.readFileSync('../ssl/dev.kazootechnology.com.crt'),
-      //ca: fs.readFileSync('/path/to/ca.pem'),
-    }
+    // https: {
+    //   key: fs.readFileSync('/Users/kendalllo/dev/Kazoo/client.eduhk.ps/vue-webrtc/ssl/dev.kazootechnology.com.key', 'utf8'),
+    //   cert: fs.readFileSync('/Users/kendalllo/dev/Kazoo/client.eduhk.ps/vue-webrtc/ssl/dev.kazootechnology.com.crt', 'utf8'),
+    //   //ca: fs.readFileSync('/path/to/ca.pem'),
+    // }
   },
   performance: {
     hints: false

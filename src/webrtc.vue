@@ -1,5 +1,5 @@
 <template>
-  <div class="video-list" > 
+  <div class="video-list" >
       <div v-for="item in videoList"
           v-bind:video="item"
           v-bind:key="item.id"
@@ -28,7 +28,7 @@
     props: {
       roomId: {
         type: String,
-        default: 'public-room'
+        default: 'kazoo1'
       },
       socketURL: {
         type: String,
@@ -78,7 +78,11 @@
       this.rtcmConnection.enableLogs = this.enableLogs;
       this.rtcmConnection.session = {
         audio: this.enableAudio,
-        video: this.enableVideo
+        video: this.enableVideo,
+        oneway: false
+        // audio: false, //this.enableAudio,
+        // video: false, //this.enableVideo
+        // oneway: true
       };
       this.rtcmConnection.sdpConstraints.mandatory = {
         OfferToReceiveAudio: this.enableAudio,
@@ -118,9 +122,19 @@
           if (stream.type === 'local') {
             that.localVideo = video;
           }
+          // Kendall: This part is to stop the host's video from appearing
+          else {
+            // const tracks = stream.getTracks();
+            // tracks.forEach(function(track) {
+            //   if(track.kind==="video") {
+            //     track.stop();
+            //     //localStream.removeTrack(track);
+            //   }
+            // });
+          }
         }
 
-        setTimeout(function(){ 
+        setTimeout(function(){
           for (var i = 0, len = that.$refs.videos.length; i < len; i++) {
             if (that.$refs.videos[i].id === stream.streamid)
             {
@@ -129,7 +143,7 @@
             }
           }
         }, 1000);
-        
+
         that.$emit('joined-room', stream.streamid);
       };
       this.rtcmConnection.onstreamended = function (stream) {
@@ -141,6 +155,10 @@
         });
         that.videoList = newList;
         that.$emit('left-room', stream.streamid);
+      };
+      this.rtcmConnection.onmessage = function (event) {
+        console.log("onmessage called")
+        console.log(event);
       };
     },
     methods: {
