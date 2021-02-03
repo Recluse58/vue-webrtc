@@ -22,6 +22,7 @@ export default {
       rtcmConnection: null,
       localVideo: null,
       videoList: [],
+      endedVideoList: [], // Kendall
       canvas: null,
     };
   },
@@ -105,6 +106,25 @@ export default {
       });
     }
     that.rtcmConnection.onstream = function (stream) {
+      console.log('onstream -> incoming streamId', stream.streamid)
+      that.videoList.forEach( elem => {
+        console.log('onstream -> current video list id: ', elem.id)
+
+      })
+
+      // Kendall
+      if(that.endedVideoList && that.endedVideoList.length > 0){
+        let bugFound = that.endedVideoList.find(videoId => {
+          return videoId === stream.streamid
+        });
+        if (bugFound != undefined) {
+          console.log(stream.streamid, " is supposed to have ended. Skipping this new stream add.")
+          return
+        }
+      }
+    // Kendall
+
+
       let found = that.videoList.find(video => {
         return video.id === stream.streamid
       })
@@ -115,6 +135,7 @@ export default {
           type: stream.type
         };
         that.videoList.push(video);
+        console.log('onstream -> new-remote-stream')
         that.$emit('new-remote-stream', that.videoList)
         if (stream.type === 'local') {
           that.localVideo = video;
@@ -140,10 +161,13 @@ export default {
         if (item.id !== stream.streamid) {
           newList.push(item);
         }
+        else {
+          that.endedVideoList.push(stream.streamid);
+        }
       });
       that.videoList = newList;
-      that.$emit('new-remote-stream', that.videoList)
-      that.$emit('left-room', 'left-room ' + stream.streamid);
+      console.log('onstreamended -> new-remote-stream')
+      that.$emit('onstreamended -> left-room', 'left-room ' + stream.streamid);
     };
   },
   methods: {
@@ -160,6 +184,7 @@ export default {
         localStream.stop();
       });
       this.videoList = [];
+      console.log('leave() -> new-remote-stream')
       this.$emit('new-remote-stream', this.videoList)
     },
     capture() {
