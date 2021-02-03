@@ -12,11 +12,12 @@
           <vue-webrtc ref="webrtc"
                       width="100%"
                       :roomId="roomId"
-                      v-on:joined-room="logEvent"
-                      v-on:left-room="logEvent"
-                      v-on:opened-room="logEvent"
-                      v-on:share-started="logEvent"
-                      v-on:share-stopped="logEvent"
+                      v-on:joined-room="joinedRoomEvent"
+                      v-on:left-room="leftRoomEvent"
+                      v-on:opened-room="openedRoomEvent"
+                      v-on:share-started="shareStartedEvent"
+                      v-on:share-stopped="shareStoppedEvent"
+                      v-on:new-remote-stream="newRemoteStreamEvent"
                       @error="onError" />
         </div>
         <div class="row">
@@ -80,9 +81,30 @@
       onError(error, stream) {
         console.log('On Error Event', error, stream);
       },
+      leftRoomEvent(event){
+        console.log('leftRoomEvent : ', event);
+      },
+      joinedRoomEvent(event){
+        this.joinedRoom = true;
+        console.log('joinedRoomEvent : ', event);
+      },
+      openedRoomEvent(event){
+        this.joinedRoom = true;
+        console.log('openedRoomEvent : ', event);
+      },
+      shareStartedEvent(event){
+        console.log('shareStartedEvent : ', event);
+      },
+      shareStoppedEvent(event){
+        console.log('shareStoppedEvent : ', event);
+      },
       logEvent(event) {
         console.log('Event : ', event);
       },
+      newRemoteStreamEvent(videoList) {
+        console.log('newRemoteStream : ', videoList);
+        //this.videoList = videoList.filter( video => video.type != 'local')
+      }
     }
   };
 </script>
