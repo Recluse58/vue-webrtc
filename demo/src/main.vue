@@ -58,7 +58,7 @@
     data() {
       return {
         img: null,
-        roomId: "kazoo1"
+        roomId: "kazoo-room-01"
       };
     },
     computed: {
